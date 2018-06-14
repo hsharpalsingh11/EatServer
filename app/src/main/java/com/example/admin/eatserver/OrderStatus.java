@@ -1,6 +1,7 @@
 package com.example.admin.eatserver;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 public class OrderStatus extends AppCompatActivity
 {
     RecyclerView recyclerView;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     RecyclerView.LayoutManager layoutManager;
 
     FirebaseRecyclerAdapter<Request,OrderViewHolder> adapter;
@@ -105,7 +108,7 @@ public class OrderStatus extends AppCompatActivity
         final View view = inflater.inflate(R.layout.update_order_layout,null);
 
         spinner = (MaterialSpinner)view.findViewById(R.id.status);
-        spinner.setItems("Placed ","On the way","Shipped");
+        spinner.setItems("Placed ","On my way","Shipped");
 
         alertDialog.setView(view);
         final String localKey = key;

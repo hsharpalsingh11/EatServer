@@ -57,7 +57,7 @@ public class SignIn extends AppCompatActivity {
                 if(dataSnapshot.child( localPhone).exists())
                 {
                     mDialog.dismiss();
-                    User user = dataSnapshot.child( localPhone ).getValue(User.class);
+                    User user = dataSnapshot.child( localPhone.toString() ).getValue(User.class);
                     user.setPhone( localPhone );
                     if(Boolean.parseBoolean( user.getIsStaff() ))
                     {

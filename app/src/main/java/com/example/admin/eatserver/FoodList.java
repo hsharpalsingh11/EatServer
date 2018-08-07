@@ -44,8 +44,9 @@ public class FoodList extends AppCompatActivity {
         RecyclerView recyclerView;
         RecyclerView.LayoutManager layoutManager;
         FloatingActionButton fab;
+    RelativeLayout rootLayout;
 
-        //Firebase
+    //Firebase
        FirebaseDatabase db;
        DatabaseReference foodList;
        FirebaseStorage storage;
@@ -53,7 +54,6 @@ public class FoodList extends AppCompatActivity {
         //New Food
         MaterialEditText edtName,edtDescription,edtPrice,edtDiscount;
         Button btnSelect,btnUpload;
-        RelativeLayout rootLayout;
         Food newFood;
     Uri saveUri;
     String categoryId="";
@@ -89,17 +89,18 @@ public class FoodList extends AppCompatActivity {
             loadListFood(categoryId);
     }
 
-    private void loadListFood(String categoryId) {
+    private void loadListFood(CharSequence categoryId) {
         adapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(
                 Food.class,
                 R.layout.food_item,
                 FoodViewHolder.class,
-                foodList.orderByChild( "menuId" ).equalTo( categoryId )
+                foodList.orderByChild( "menuId" ).equalTo((String) categoryId)
         ) {
             @Override
-            protected void populateViewHolder(FoodViewHolder viewHolder, Food model, int position) {
+            protected void populateViewHolder(final FoodViewHolder viewHolder, final Food model,final int position) {
                 viewHolder.txtFoodName.setText( model.getName() );
                 Picasso.with( getBaseContext() ).load( model.getImage() ).into( viewHolder.FoodimageView );
+                final Food local = model;
                 viewHolder.setItemClickListener( new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {

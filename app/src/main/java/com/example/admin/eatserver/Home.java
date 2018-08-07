@@ -28,22 +28,24 @@ import android.widget.Toast;
 import com.example.admin.eatserver.Common.Common;
 import com.example.admin.eatserver.Interface.ItemClickListener;
 import com.example.admin.eatserver.Model.Category;
+import com.example.admin.eatserver.Model.Token;
 import com.example.admin.eatserver.ViewHolder.MenuViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Comment;
-import org.w3c.dom.Text;
 
 import java.util.UUID;
 
@@ -114,6 +116,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
           recycler_menu.setLayoutManager(layoutManager);
           loadMenu();
 
+          updateToken(FirebaseInstanceId.getInstance().getToken());
+
+    }
+
+    private void updateToken(String token) {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference tokens = db.getReference("Tokens");
+        Token data = new Token(token,true);
+        tokens.child( Common.currentUser.getPhone()).setValue(data);
     }
 
     private void showDialog()
@@ -289,7 +300,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+
+            int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -308,6 +320,22 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         {
             Intent orders = new Intent(Home.this,OrderStatus.class);
             startActivity(orders);
+        }
+        if ( id == R.id.nav_banner)
+        {
+            Intent banner = new Intent(Home.this,BannerActivity.class);
+            startActivity(banner);
+        }
+
+        if ( id == R.id.nav_message)
+        {
+            Intent orders = new Intent(Home.this,MessageActivity.class);
+            startActivity(orders);
+        }
+        if ( id == R.id.nav_shipper)
+        {
+            Intent shipper = new Intent(Home.this,ShipperManagement.class);
+            startActivity(shipper);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById( R.id.drawer_layout );
@@ -329,6 +357,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void deleteCategory(String key) {
+
+        DatabaseReference foods = database.getReference("Foods");
+        Query foodInCategory = foods.orderByChild("menuId").equalTo(key);
+        foodInCategory.addListenerForSingleValueEvent( new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot:dataSnapshot.getChildren())
+                {
+                    postSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        } );
+
         categories.child( key ).removeValue();
         Toast.makeText( this, "Item Deleted!!", Toast.LENGTH_SHORT ).show();
     }

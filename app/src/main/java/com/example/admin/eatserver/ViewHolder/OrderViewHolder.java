@@ -3,15 +3,19 @@ package com.example.admin.eatserver.ViewHolder;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.admin.eatserver.Interface.ItemClickListener;
 import com.example.admin.eatserver.R;
 
+import java.io.BufferedReader;
+
 public class OrderViewHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener, View.OnCreateContextMenuListener
-{    public TextView txtOrderId, txtOrderStatus,txtOrderPhone,txtOrderAddress;
-    private ItemClickListener itemClickListener;
+
+{
+    public TextView txtOrderId, txtOrderStatus,txtOrderPhone,txtOrderAddress,txtDate;
+    public Button btnEdit,btnRemove,btnTrack,btnDetail;
 
     public OrderViewHolder(View itemView) {
         super(itemView);
@@ -19,25 +23,10 @@ public class OrderViewHolder extends RecyclerView.ViewHolder
         txtOrderId =(TextView)itemView.findViewById(R.id.order_id);
         txtOrderStatus =(TextView)itemView.findViewById(R.id.order_status);
         txtOrderPhone =(TextView)itemView.findViewById(R.id.order_phone);
-
-        itemView.setOnClickListener(this);
-        itemView.setOnCreateContextMenuListener(this);
-    }
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
-
-
-    @Override
-    public void onClick(View v)
-    {
-        itemClickListener.onClick(v,getAdapterPosition(),false);
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.setHeaderTitle("Select the Action ");
-        menu.add(0,0,getAdapterPosition(),"Update");
-        menu.add(0,1,getAdapterPosition(),"Update");
+        txtDate = (TextView)itemView.findViewById( R.id.order_date );
+        btnEdit = (Button)itemView.findViewById( R.id.btnEdit );
+        btnRemove = (Button)itemView.findViewById( R.id.btnRemove );
+        btnDetail = (Button)itemView.findViewById( R.id.btnDetail );
+        btnTrack = (Button)itemView.findViewById( R.id.btnTrack );
     }
 }

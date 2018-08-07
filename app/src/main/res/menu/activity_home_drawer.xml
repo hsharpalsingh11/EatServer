@@ -4,6 +4,11 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_banner"
+            android:icon="@drawable/ic_laptop_black_24dp"
+            android:title="Banners"/>
         <item
             android:id="@+id/nav_menu"
             android:icon="@drawable/ic_restaurant_black_24dp"
@@ -16,6 +21,16 @@
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_access_time_black_24dp"
             android:title="Orders" />
+
+        <item
+            android:id="@+id/nav_shipper"
+            android:icon="@drawable/ic_access_time_black_24dp"
+            android:title="Shippers Management" />
+        <item
+            android:id="@+id/nav_message"
+            android:icon="@drawable/ic_message_black_24dp"
+            android:title="Message"/>
+
         <item
             android:id="@+id/nav_sign_out"
             android:icon="@drawable/ic_exit_to_app_black_24dp"

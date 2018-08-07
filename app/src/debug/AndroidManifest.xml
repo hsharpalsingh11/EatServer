@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.admin.eatserver">
+
+    <application>
+        <activity android:name=".MessageActivity" />
+        <activity android:name=".BannerActivity"></activity>
+    </application>
+
+</manifest>
